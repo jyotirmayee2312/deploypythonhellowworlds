@@ -1,12 +1,12 @@
-name: Docker Image Push
+name: Docker Image Push and Deployment
 
 on:
   push:
     branches:
-      - main  # Adjust the branch name if necessary
+      - main
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,4 +27,17 @@ jobs:
 
       - name: Log out from DockerHub
         run: docker logout
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.5.2
+        with:
+          host: ${{ secrets.EC2_HOST }}  # Replace with your EC2 instance's public IP or hostname
+          username: ${{ secrets.SSH_USERNAME }}  # Replace with your SSH username
+          key: ${{ secrets.SSH_PRIVATE_KEY }}  # Add your private SSH key as a secret in your repository
+          port: 22
+          script: |
+            docker stop my-container-name || true
+            docker rm my-container-name || true
+            docker pull ${{ secrets.DOCKER_USERNAME }}/myfirstrepo:latest
+            docker run -d --name my-container-name -p 80:80 ${{ secrets.DOCKER_USERNAME }}/myfirstrepo:latest
 
