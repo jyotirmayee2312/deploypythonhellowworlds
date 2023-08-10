@@ -22,7 +22,7 @@ jobs:
       - name: Build and push Docker image
         run: |
           docker buildx create --use
-          docker buildx build --platform linux/amd64 --push -t $DOCKER_USERNAME/my-first-repo:latest .
+          docker buildx build --platform linux/amd64 --push -t $DOCKER_USERNAME/myfirstrepo:latest .
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
