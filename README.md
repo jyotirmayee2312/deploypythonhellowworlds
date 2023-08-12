@@ -1,4 +1,4 @@
-# Docker Image Push and Deployment Documentation
+# GitHub Actions Automated Docker Image CI/CD Pipeline with EC2 Deployment
 
 ## Overview
 
